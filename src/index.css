@@ -1,0 +1,20 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Geist&display=swap');
+
+body {
+    font-family: 'Geist', sans-serif;
+}
+
+.geist {
+    font-family: "Geist", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+}
+
+.geist-bold {
+    font-family: "Geist", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: normal;
+}
