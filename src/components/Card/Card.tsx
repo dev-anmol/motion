@@ -1,5 +1,5 @@
-import {motion, AnimatePresence} from 'motion/react'
-import {useState} from "react";
+import { motion, AnimatePresence } from 'motion/react'
+import { useState } from "react";
 
 export default function Card() {
 
@@ -44,8 +44,8 @@ export default function Card() {
                                         onClick={() => setOpen(false)}
                                         className="text-[10px] flex items-center gap-1 mt-4 shadow-[0_1px_1px_rgba(0,0,0,0.05),_0_4px_6px_rgba(34,42,53,0.04),_0_24px_48px_rgba(47,48,55,0.05),_0_2px_3px_rgba(0,0,0,0.04)] rounded-md px-2 py-1">
                                         <img src="public/logo.png"
-                                             className="h-4 w-4"
-                                             alt="ui" width={50} height={50}/>
+                                            className="h-4 w-4"
+                                            alt="ui" width={50} height={50} />
                                         Aceternity
                                     </button>
                                 </div>
