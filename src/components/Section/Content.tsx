@@ -1,19 +1,43 @@
 import { GlobeIcon, RocketIcon, SparklesIcon } from "lucide-react"
-import { motion, useMotionTemplate, useMotionValueEvent, useScroll, useSpring, useTransform } from "motion/react";
-import { useRef } from "react";
+import { easeInOut, motion, useMotionTemplate, useMotionValueEvent, useScroll, useSpring, useTransform } from "motion/react";
+import { useRef, useState } from "react";
 
 
 export default function Content() {
+
+    const backgrounds = ['#171717', '#0f172a', '#272640'];
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [background, setBackground] = useState(backgrounds[0]);
+
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start end", "end start"]
+    });
+
+    //used to track anything, and get its value
+    useMotionValueEvent(scrollYProgress, "change", (latest) => {
+        const finalValue = Math.floor(latest * backgrounds.length);
+        console.log(finalValue);
+        setBackground(backgrounds[finalValue])
+    })
+
     return (
         <>
-            <div className="min-h-screen flex flex-col items-center justify-center gap-50 bg-neutral-900 p-40">
+            <motion.div
+                ref={containerRef}
+                animate={{ background }}
+                transition={{
+                    duration: 0.4,
+                    ease: "easeInOut"
+                }}
+                className="min-h-screen flex flex-col items-center justify-center gap-50 bg-neutral-900 p-40">
                 <div className="flex flex-col mx-auto"></div>
                 {
                     features.map((feature) => (
                         <Card key={feature.title} feature={feature} />
                     ))
                 }
-            </div>
+            </motion.div>
         </>
     )
 }
@@ -21,6 +45,7 @@ export default function Content() {
 const Card = ({ feature }: { feature: Feature }) => {
 
     const ref = useRef<HTMLDivElement>(null);
+
     const { scrollYProgress } = useScroll({
         target: ref,
         offset: ["start end", "end start"] //element is visible when it enters the viewport, element is hidden when it leaves the viewport (element = start, viewport = end --- i want to trigger the animation when the element is visible)
@@ -36,10 +61,14 @@ const Card = ({ feature }: { feature: Feature }) => {
         mass: 1
     });
 
+    // we can use useTransform on any value and transform it using anything
     // const translateContent = useTransform(scrollYProgress, [0, 1], [-100, 100]);
     const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
     const blur = useTransform(scrollYProgress, [0.5, 1], [0, 10]);
-    const scale = useTransform(scrollYProgress, [0.5, 1], [1, 0.8])
+    const scale = useTransform(scrollYProgress, [0.5, 1], [1, 0.8]);
+
+
+
 
     return (
         <div
