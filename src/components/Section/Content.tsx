@@ -1,26 +1,70 @@
 import { GlobeIcon, RocketIcon, SparklesIcon } from "lucide-react"
+import { motion, useMotionTemplate, useMotionValueEvent, useScroll, useSpring, useTransform } from "motion/react";
+import { useRef } from "react";
 
 
 export default function Content() {
     return (
         <>
-            <div className="min-h-screen flex flex-col items-center justify-center bg-neutral-900">
-
-                <div className="flex flex-col gap-10"></div>
+            <div className="min-h-screen flex flex-col items-center justify-center gap-50 bg-neutral-900 p-40">
+                <div className="flex flex-col mx-auto"></div>
                 {
-                    features.map((item, idx) => (
-                        <div key={idx} className="grid grid-cols-2 gap-20">
-                            <div>
-                                {item.icon}
-                                <h2 className="text-4xl font-bold text-white">{item.title}</h2>
-                                <p className="text-neutral-400">{item.description}</p>
-                            </div>
-                        </div>
+                    features.map((feature) => (
+                        <Card key={feature.title} feature={feature} />
                     ))
                 }
             </div>
         </>
     )
+}
+
+const Card = ({ feature }: { feature: Feature }) => {
+
+    const ref = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: ref,
+        offset: ["start end", "end start"] //element is visible when it enters the viewport, element is hidden when it leaves the viewport (element = start, viewport = end --- i want to trigger the animation when the element is visible)
+    })
+
+    // useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    //     console.log("value changed", latest);
+    // })
+
+    const translateContent = useSpring(useTransform(scrollYProgress, [0, 1], [-100, 100]), {
+        damping: 30,
+        stiffness: 100,
+        mass: 1
+    });
+
+    // const translateContent = useTransform(scrollYProgress, [0, 1], [-100, 100]);
+    const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
+    const blur = useTransform(scrollYProgress, [0.5, 1], [0, 10]);
+    const scale = useTransform(scrollYProgress, [0.5, 1], [1, 0.8])
+
+    return (
+        <div
+            ref={ref}
+            key={feature.title}
+
+            className="grid grid-cols-2 max-w-[90%] gap-14 place-items-center">
+            <motion.div
+                style={{
+                    filter: useMotionTemplate`blur(${blur}px)`, //we cannot use motion values directly we have to use useMotionTemplate
+                    scale
+                }}
+                className="flex flex-col gap-4">
+                {feature.icon}
+                <h2 className="text-xl font-bold text-white">{feature.title}</h2>
+                <p className="text-lg text-neutral-400">{feature.description}</p>
+            </motion.div>
+            <motion.div style={{
+                y: translateContent,
+                opacity,
+            }}>{feature.content}
+            </motion.div>
+        </div>
+
+    );
 }
 
 type Feature = {
@@ -40,8 +84,8 @@ const features: Feature[] = [
                 <img
                     src="https://assets.aceternity.com/pro/car-1.jpg"
                     alt="car"
-                    height={500}
-                    width={500}
+                    height={350}
+                    width={350}
                     className="rounded-lg"
                 />
             </div>
@@ -56,8 +100,8 @@ const features: Feature[] = [
                 <img
                     src="https://assets.aceternity.com/pro/art.jpeg"
                     alt="creative concept"
-                    height={500}
-                    width={500}
+                    height={350}
+                    width={350}
                     className="rounded-lg"
                 />
             </div>
@@ -72,8 +116,8 @@ const features: Feature[] = [
                 <img
                     src="https://assets.aceternity.com/pro/car-1.jpg"
                     alt="collaboration"
-                    height={500}
-                    width={500}
+                    height={350}
+                    width={350}
                     className="rounded-lg"
                 />
             </div>
