@@ -11,7 +11,7 @@ const useOutSideClick = (callback: () => void) => {
                 callback();
             }
         }
-        document.addEventListener("mousedown", handleClick); // Changed from "click" to "mousedown"
+        document.addEventListener("mousedown", handleClick);
         return () => {
             document.removeEventListener('mousedown', handleClick)
         };
@@ -37,9 +37,10 @@ export default function Layout() {
                 <motion.div
                     layoutId={`card-parent-${current.title}`}
                     ref={ref}
-                    className='flex flex-col gap-6 fixed h-[550px] z-20 m-auto inset-0 w-80 border-neutral-200 p-4 rounded-md bg-white'>
-                    <motion.img layoutId={`card-image-${current.src}`} src={current.src} alt={current.src} className='object-cover rounded-lg' />
+                    className='flex flex-col gap-6 fixed h-[600px] overflow-y-scroll overflow-x-hidden z-20 m-auto inset-0 w-80 border-neutral-200 p-4 rounded-md bg-white'>
+                    <motion.img layoutId={`card-image-${current.src}`} src={current.src} alt={current.src} className='object-cover rounded-lg h-[300px]' />
                     <motion.div
+
                         layoutId={`card-content-${current.content}`}
                         className='flex flex-col items-start gap-5'>
                         <div className='flex flex-row justify-between w-full'>
@@ -55,9 +56,23 @@ export default function Layout() {
                         </div>
                         <p className='text-neutral-500 text-[11px]'>{current.description}</p>
                     </motion.div>
-                    <div className='text-neutral-500 text-[11px] overflow-x-hidden h-24 overflow-y-auto'>
+                    <motion.div
+                        initial={{
+                            opacity: 0,
+                            y: 20,
+                            filter: 'blur(10px)'
+                        }}
+                        animate={{
+                            opacity: 1,
+                            y: 0,
+                            filter: 'blur(0px)'
+                        }}
+                        transition={{
+                            duration: 0.5
+                        }}
+                        className='text-neutral-500 text-[11px] overflow-x-hidden h-24 overflow-y-auto [mask-image:linear-gradient(to_top,transparent_5%,black_80%)]'>
                         {current.content()}
-                    </div>
+                    </motion.div>
                 </motion.div>
             }
             {
@@ -147,8 +162,10 @@ const cards: Card[] = [
             return (
                 <>
                     <p>
-                        "Kill Bill" explores obsessive love, heartbreak, and revenge fantasies with a melodic twist.
-                        SZA's vulnerability and sharp storytelling create a track that's both relatable and chilling.
+                        "Kill Bill" dives deep into the darker side of heartbreak, blending vulnerability, obsession, and revenge into a hauntingly melodic narrative.
+                        SZA's raw lyricism and smooth delivery craft a chilling yet strangely relatable story of post-breakup turmoil.
+                        With its minimalist production and emotionally charged vocals, the track captures the fine line between love and madness,
+                        making it one of the most talked-about songs from her *SOS* album.
                     </p>
                     <ul className="mt-2 list-disc list-inside">
                         <li>Artist: SZA</li>
