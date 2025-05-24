@@ -1,5 +1,5 @@
-import { GlobeIcon, RocketIcon, SparklesIcon } from "lucide-react"
-import { easeInOut, motion, useMotionTemplate, useMotionValueEvent, useScroll, useSpring, useTransform } from "motion/react";
+import { GlobeIcon, RocketIcon, SparklesIcon } from "lucide-react";
+import { motion, useMotionTemplate, useMotionValueEvent, useScroll, useSpring, useTransform } from "motion/react";
 import { useRef, useState } from "react";
 
 

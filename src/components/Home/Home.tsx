@@ -10,7 +10,7 @@ function Home() {
         }, 200)
     }
 
-    const content: string[] = ['Subscribe', 'Dashboard', 'Content']
+    const content: string[] = ['Subscribe', 'Dashboard', 'Content', 'Layout']
     return (
         <>
 
